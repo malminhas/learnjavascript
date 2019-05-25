@@ -1,3 +1,15 @@
+LearnJavaScript
+===============
+Some notes and working code examples for JavaScript course at [learnjavascript.online](https://learnjavascript.online).
+The code contains a representative sample of all the lessons numbered with integrated comments.  You run them like this:
+```
+$ node learnJavaScript.js
+```
+The project files correspond to the four extended projects I,II,III,IV in the course.  You run them as follows:
+```
+$ node projectI.js
+```
+
 Arrow Functions
 ---------------
 ```
@@ -34,6 +46,7 @@ sumOddNumbers([15, -5, 10])
 
 Export
 ------
+Note comments in code about differences in export/import between ES6 and node.js environment.
 ```
 class Helper {
     constructor(word){
@@ -58,6 +71,7 @@ module.exports = {Helper};
 
 Import
 ------
+For node.js `import` doesn't work and you need to use `require`.
 ```
 const helper = require("./helper.js");
 
@@ -68,11 +82,11 @@ console.log(`${h.capitalize()}`)
 
 DOM interaction
 ---------------
-First install `jsdom`:
+For node.js environment you first need to install `jsdom`:
 ```
 $ npm install jsdom
 ```
-Now you can use it as follows:
+Now you can use it as follows to mimic :
 ```
 const jsdom = require("jsdom");
 
