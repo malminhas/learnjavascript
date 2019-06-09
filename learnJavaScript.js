@@ -776,6 +776,9 @@ console.log('--- 24. Dom selection ---')
 //      const item = document.querySelector(".item");
 //   </script>
 //
+// id => #
+// class => .
+//
 // document.querySelector("css-selector") returns an object which is an 
 // instance of HTMLElement. HTMLElement is the parent class that every 
 // single HTML element in your page inherits from. This is just a 
@@ -797,7 +800,7 @@ const jsdom = require("jsdom");
 
 let dom = new jsdom.JSDOM(`<div>Hello World!</div>`);
 let document = dom.window.document;
-const div = document.querySelector("div");
+let div = document.querySelector("div");
 if (div){
     console.log(`div.textContent = ${div.textContent}`); // "Hello World!"
 }
@@ -807,19 +810,8 @@ const getTextFromSelector = css_selector => {
     // use ternary conditional operator
     return sel ? sel.textContent : `nothing in ${css_selector}`
 }
-
-
-
-
-
-
-
-
-
-
-
-console.log(getTextFromSelector("h1"));
-console.log(getTextFromSelector("h2"));
+console.log(`getTextFromSelector("h1") = ${getTextFromSelector("h1")}`);
+console.log(`getTextFromSelector("h2") = ${getTextFromSelector("h2")}`);
 
 // querySelector expects any CSS selector whereas getElementById only expects an id.
 // These two are equivalent:
@@ -831,7 +823,7 @@ console.log(getTextFromSelector("h2"));
 // 1. They both have a .length property
 // 2. You can loop through both of them with .forEach()
 // However, you cannot call .filter on a NodeList
-const html = `<!DOCTYPE html>
+let html = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -874,17 +866,17 @@ const getAboutLinks = () => {
     return document.querySelectorAll('.about');
 }
 
-console.log(getDivElements());
+console.log(`getDivElements() = ${getDivElements()}`);
 getDivElements().forEach(element => {
-    console.log(element.textContent)
+    console.log(`element.textContent = ${element.textContent}`)
 })
-console.log(getFooterLinks());
-console.log(getAboutLinks());
-console.log(document.querySelector('#navbar'))
+console.log(`getFooterLinks() = ${getFooterLinks()}`);
+console.log(`getAboutLinks() = ${getAboutLinks()}`);
+console.log(`document.querySelector('#navbar') = ${document.querySelector('#navbar')}`)
 
 const paragraphs = document.querySelectorAll("p");
 paragraphs.forEach(paragraph => {
-    console.log(paragraph.textContent); // logs every paragraph's text
+    console.log(`paragraph.textContent = ${paragraph.textContent}`); // logs every paragraph's text
 });
 
 // You can convert a NodeList into an Array.
@@ -899,7 +891,7 @@ const getShortTextParagraphs = () => {
     const paragraphs = document.querySelectorAll('p')
     return [...paragraphs].filter(para => para.textContent.length < 10) 
 }
-console.log(getShortTextParagraphs());
+console.log(`getShortTextParagraphs() = ${getShortTextParagraphs()}`);
 
 // 25. Dom Basics  
 console.log('--- 25. Dom basics ---')
@@ -909,7 +901,7 @@ const getFormattedWelcomeMessage = () => {
     return document.querySelector('#welcome-message').innerHTML;
 }
 
-console.log(getFormattedWelcomeMessage());
+console.log(`getFormattedWelcomeMessage() = ${getFormattedWelcomeMessage()}`);
 
 const setFormattedWelcomeMessage = (name) => {
     const element = document.querySelector('#welcome-message');
@@ -919,6 +911,14 @@ const setFormattedWelcomeMessage = (name) => {
 setFormattedWelcomeMessage("John");
 setFormattedWelcomeMessage("Jennifer");
 
+html = `<ul id="shopping-list">
+    <li>Carrots</li>
+    <li>Broccoli</li>
+    <li>Avocado</li>
+</ul>`
+dom = new jsdom.JSDOM(html);
+document = dom.window.document;
+
 const emptyShoppingList = () => {
   const list = document.querySelector("#shopping-list");
   list.innerHTML = "";
@@ -926,9 +926,210 @@ const emptyShoppingList = () => {
 
 //sample usage
 emptyShoppingList();
+console.log(`after emptying shopping list html = "${document.documentElement.outerHTML}"`)
 
 // As a rule of thumb, you can use .textContent and .innerHTML whenever you have an element with a closing tag. 
 // And you can always use .value for form elements, such as input (type: text, email, password, etc.) and select.
+// You may want to remove the highlight from the "Carrots" element by removing the highlighted class.
+// Here's how you remove a class:
+html = `<ul id="shopping-list">
+    <li class="highlighted">Carrots</li>
+    <li>Broccoli</li>
+    <li>Avocado</li>
+</ul>`
+dom = new jsdom.JSDOM(html);
+document = dom.window.document;
+
+const isHighlighted = element => {
+  return element.classList.contains("highlighted"); //returns boolean;
+}
+
+const element = document.querySelector("#shopping-list .highlighted");
+console.log(`isHighlighted(element) = ${isHighlighted(element)}`)
+element.classList.remove("highlighted");
+console.log(`html with class removed = "${document.documentElement.outerHTML}"`)
+console.log(`isHighlighted(element) = ${isHighlighted(element)}`)
+
+// Need forEach if highlighting ALL elements
+const highlightShoppingListItems = () => {
+  const elements = document.querySelectorAll("#shopping-list li")
+  elements.forEach(element => {
+      element.classList.add("highlighted");
+  })
+}
+
+console.log(`highlightShoppingListItems() = ${highlightShoppingListItems()}`);
+console.log(`html with all list items highlighted = "${document.documentElement.outerHTML}"`)
+
+// Attributes
+html = `<div id="banner">
+    <button disabled="disabled" id="login">Login</button>
+</div>`
+dom = new jsdom.JSDOM(html);
+document = dom.window.document;
+
+div = document.querySelector("#banner");
+console.log(`div.getAttribute("id") = ${div.getAttribute("id")}`); // "banner"
+const loginButton = document.querySelector("#login");
+console.log(`button.getAttribute("disabled") = ${loginButton.getAttribute("disabled")}`); // "disabled"
+
+// enable button by _removing_ its disabled attribute
+const enableButton = button => {
+  button.removeAttribute("disabled");
+}
+
+// 26. Dom Advanced
+console.log('--- 26. Dom advanced ---')
+// One of the powerful features of the DOM is being able to change the style of an element. 
+// Any CSS property can be set or changed from JavaScript.
+// This lets you create dynamic experiences based on certain conditions or based on events 
+// Here we are setting the background colour of an element to red:
+html = `<div id="banner">Welcome!</div>`
+dom = new jsdom.JSDOM(html);
+document = dom.window.document;
+let banner = document.querySelector("#banner");
+banner.style.backgroundColor = "red";
+// CSS  => JavaScript
+// background-color	=> backgroundColor
+// color	=> color
+// font-size	=> fontSize
+// z-index	=> zIndex
+// Show or hide an element
+banner = document.querySelector("#banner");
+// hide element
+banner.style.display = "none";
+//show element by resetting it's display
+banner.style.display = ""; //or "initial"
+
+// Sometimes you wish to pass some data from the server into your JavaScript code. 
+// An example of that would be passing the current discount that applies to all of your users.
+// You can do that by adding a data attribute.
+html = `<div id="user-card" data-user-id="34">
+<h3>Jad Joubran</h3>
+</div>`
+dom = new jsdom.JSDOM(html);
+document = dom.window.document;
+
+const getUserIdFromCard = () => {
+  const element = document.querySelector('#user-card')
+  return Number(element.dataset.userId);
+}
+//sample usage
+console.log(`getUserIdFromCard() = ${getUserIdFromCard()}`);
+// Also covered:
+// .parentHTML
+// .closest
+// .insertAdjacentHTML(position, html_string)
+
+html = `<ul id="shopping-list">
+<li class="item">Toothpaste</li>
+<li class="item">Soap</li>
+<li class="item">Orange</li>
+</ul>`
+dom = new jsdom.JSDOM(html);
+document = dom.window.document;
+const addItemToShoppingList = item => {
+  const shoppingList = document.querySelector("#shopping-list");
+  if (item){
+      shoppingList.insertAdjacentHTML("beforeend", `<li class="item">${item}</div>`);
+  }
+  return document.documentElement.outerHTML;
+}
+//sample usage
+console.log(`addItemToShoppingList("Apple") = ${addItemToShoppingList("Apple")}`);
+console.log(`addItemToShoppingList("Banana") = ${addItemToShoppingList("Banana")}`);
+
+// Creating a paragraph:
+const paragraph = document.createElement("p");
+paragraph.classList.add("text-center");
+paragraph.textContent = "Hello World";
+console.log(`created paragraph: ${paragraph}`); 
+
+const createAvatar = (url, className) => {
+  let avatar = document.createElement("img");
+  avatar.classList.add(className);
+  avatar.src = url;
+  return avatar.outerHTML;
+}
+//sample usage
+console.log(`createAvatar("/avatar/person.png", "circle") = ${createAvatar("/avatar/person.png", "circle")}`);
+console.log(`createAvatar("/avatar/user.png", "rounded") = ${createAvatar("/avatar/user.png", "rounded")}`);
+
+// 27. Events
+console.log('--- 27. Events ---')
+// Event listener
+html = `<button>Click me</button>`
+dom = new jsdom.JSDOM(html);
+document = dom.window.document;
+let button = document.querySelector("button");
+button.addEventListener("click", () => {
+  console.log("Button clicked!");
+});
+
+// The event handler can be written inside the callback function (the 2nd argument of the addEventListener).
+// Note that the event callback, which is this part:
+// () => {
+//   console.log("B");
+// }
+// does not run on page load. It only runs when you click on the button.
+// The browser is waiting for the user to interact with elements (such as clicking on them), 
+// and will then run your callback function. This is called Event-driven programming.
+html = ` <button id="my-button">I can be toggled</button>`
+dom = new jsdom.JSDOM(html);
+document = dom.window.document;
+var initToggleActive = () => {
+  button = document.querySelector("#my-button")
+  button.addEventListener("click", () => {
+      button.classList.toggle("active")
+  })
+}
+initToggleActive();
+
+// Whenever an event is dispatched, the browser sends to you the details of the event.
+// There are many details that you can read like X,Y position, time, ctrl|shift boolean
+// There is 1 property that you will use very often which is the event's currentTarget.
+// This is the element that received the event.
+// for all elements of class "number", add an event listener.
+const elements = document.querySelectorAll(".number");
+elements.forEach(element => {
+    element.addEventListener("click", event => {
+        console.log(`event.currentTarget.textContent = ${event.currentTarget.textContent}`);
+    });
+});
+initToggleActive = () => { 
+  const button = document.querySelector("#my-button")
+  button.addEventListener("click", event => {
+      event.currentTarget.classList.toggle("active")
+  })
+}
+initToggleActive();
+
+// If you pass {once: true} as the third argument for addEventListener()  
+// the event will only run at most one time. 
+const initSendEmail = () => {
+  const button = document.querySelector("#my-button")
+  button.addEventListener("click", event => {
+      sendEmail()
+  }, {once:true})
+}
+function sendEmail(){
+    //do not modify this function
+    console.log('sendEmail here')
+}
+initSendEmail();
+
+// Other event listeners:
+// focus/blur, DOMContentloaded, Scroll, Submit (forms)
+
+
+
+
+
+
+
+
+
+
 
 
 
