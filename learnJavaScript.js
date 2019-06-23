@@ -653,7 +653,7 @@ const checkForNewNotifications3 = () => {
 }
 
 function displayNewNotifications (count) {
-  console.log(count)
+  console.log(`21. diplayNewNotifications: ${count}`)
 }
 checkForNewNotifications3()
 
@@ -668,6 +668,7 @@ const getChapters = () => {
 }
 function displayCompletedChapters (chapters) {
   // do not modify this function
+  console.log(`21. diplayCompletedChapters`)
 }
 getChapters()
 
@@ -683,7 +684,10 @@ fetch('https://api.learnjavascript.online/demo/food.json', {
 })
   .then(response => response.json())
   .then(data => {
-    console.log(data)
+    console.log(`21. fetch POST.  Dictionary keys="${Object.keys(data)}"`)
+    Object.keys(data).forEach(key => {
+      console.log(`data[${key}] = "${data[key]}"`)
+    })
   })
 
 // With catch:
@@ -1065,6 +1069,7 @@ let button = document.querySelector("button");
 button.addEventListener("click", () => {
   console.log("Button clicked!");
 });
+console.log(`addEventListener on button click`);
 
 // The event handler can be written inside the callback function (the 2nd argument of the addEventListener).
 // Note that the event callback, which is this part:
@@ -1084,6 +1089,7 @@ var initToggleActive = () => {
   })
 }
 initToggleActive();
+console.log(`addEventListener to toggle on button click`);
 
 // Whenever an event is dispatched, the browser sends to you the details of the event.
 // There are many details that you can read like X,Y position, time, ctrl|shift boolean
@@ -1103,6 +1109,7 @@ initToggleActive = () => {
   })
 }
 initToggleActive();
+console.log(`addEventListener to toggle on current active button click`);
 
 // If you pass {once: true} as the third argument for addEventListener()  
 // the event will only run at most one time. 
@@ -1117,17 +1124,84 @@ function sendEmail(){
     console.log('sendEmail here')
 }
 initSendEmail();
+console.log(`sendEmail on button click`);
 
-// Other event listeners:
+// Other event listeners include:
 // focus/blur, DOMContentloaded, Scroll, Submit (forms)
 
+// 28. Forms
+console.log('--- 28. Forms ---')
+// The reason why we need forms is to be able to group several inputs together based on their action.
+// Inputs we group together are only sent when that form is submitted.
+// You can send the data in a form by either clicking on the button or simply pressing the enter button 
+// on the keyboard while having the focus inside one of the textboxes.
+// This is what we call the submit event.
+// A form must have the following:
+// 1. have a form element
+// 2. have at least 1 input or textarea inside of the form
+// 3. have a button with type="submit"
+// You need to .addEventListener("submit"..) on the form
+// You also need to prevent the default behavior of the submit event to reload the page.
+html = `<form id="weather-form">
+    <input type="text" id="city" placeholder="Enter your city">
+    <input type="submit" value="Show weather">
+</form>`
+dom = new jsdom.JSDOM(html);
+document = dom.window.document;
 
+const initFormSubmit = () => {
+    const form = document.querySelector("#weather-form");
+    form.addEventListener("submit", event => {
+        event.preventDefault();
+        //now the form will not reload
+        console.log(`getWeatherInfo() on form submit`)
+    });
+}
 
+//sample usage (do not remove)
+initFormSubmit();
 
+// Always make sure to call .value inside the submit event to get the value when the user submitted the form.
+const form = document.querySelector("#weather-form");
+const city = document.querySelector("#city");
+form.addEventListener("submit", event => {
+    event.preventDefault();
+    // read the user's city and pass it to getWeatherInfo() if it is valid
+    if (!city.value){
+        return false;
+    }
+    getWeatherInfo(city.value);
+});
 
+// 29. DOM fetch
+console.log('--- 29. DOM Fetch ---')
+// You can also call fetch within an .addEventListener event.
+// You should always start with a console.log(data) when you resolve the API.get() promise, 
+// to be able to visualize the data that you're working with.
 
+html=`<button id="get-count">Get unread notifications</button>
+        <div id="notifications"></div>`
+dom = new jsdom.JSDOM(html);
+document = dom.window.document;
 
+//import {Backend} from "./projectII-backend.js";
+const backend = require('./projectII-backend.js');
 
+const API = new backend.Backend();
+API.setBaseUrl("https://api.learnjavascript.online/demo/")
+
+button = document.querySelector("#get-count");
+button.addEventListener("click", () => {
+    API.get("notifications/new.json")
+    .then(data => {
+        console.log(`29. data = ${data}`);
+        let count = data.count  
+        console.log(count);
+        // Now we need to update corresponding #notifications
+        const notifications = document.querySelector("#notifications");
+        notifications.innerHTML = count
+    });
+});
 
 
 
