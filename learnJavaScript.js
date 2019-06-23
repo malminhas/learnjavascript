@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 // Installation
 // ------------
 // We want to install node.js.
@@ -1203,9 +1204,211 @@ button.addEventListener("click", () => {
     });
 });
 
+// 30.  Project III
+console.log('--- 30. Project III ---')
+console.log('Completed in separate file')
 
+// 31.  Functions II
+console.log('--- 31. Functions II ---')
+// Reference to function:
+// If you don't put the () after a function call, we end up 
+// not calling the function, but rather displaying its source code.
+// We call this a reference to a function.  Which means, instead of 
+// calling the function, you refer to it (or you point to it). 
+// So you're not telling the browser to call that function, 
+// but instead you're telling the browser that you are referring 
+// to that particular function.
+// If you try to console.log it you'll just get the source code
 
+const sayHello = () => {
+    console.log("Hello World");
+}
+console.log(`sayHello = "${sayHello}"`);
+console.log('Something'.toUpperCase);
 
+class App {
+    constructor() {
+        console.log('App::constructor')
+        this.body = document.querySelector("body");
+        this.darkMode = false;
+        this.initEvents();
+    }
 
+    initEvents() {
+        // uncomment next line & make it toggle dark mode
+        console.log('App::initEvents')
+        this.body.addEventListener("click", this.toggleDarkMode);
+    }
+
+    toggleDarkMode() {
+        // if the value is true, then it'll be false
+        // if the value is false, then it'll be true
+        console.log(`App::toggleDarkMode`)
+        this.darkMode = !this.darkMode;
+    }
+}
+
+console.log("Creating app with toggleDarkMode on eventListener")
+const app = new App();
+
+// 32.  Async-Await
+console.log('--- 32. Async-Await ---')
+// Async/await is a special syntax that lets you work with promises in a more logical manner.
+// You can make any function async by simply adding the keyword async before the function definition.
+// An async function always returns a Promise. This is not visible to you, but this is the point of async/await.
+// We say that it's syntactic sugar (it tries to make the syntax nicer).
+// So if you'd like to read the value returned by an async function, you have to resolve its promise with .then()
+
+const ageLimit = async () => {
+    return 18;
+}
+
+//usage
+ageLimit().then(result => {
+    console.log(`32. resolve async ageLimit => ${result}`);
+});
+
+// The await keyword can only be used inside async functions.
+// It allows you to wait for the result of a promise, before continuing the rest of the code.
+// await will "pause" execution until the promise has resolved.
+// await will automatically call .then() on the promise and give you its result.
+
+const getValue = async () => {
+    const result = await ageLimit();
+    console.log(`32. async-await on getValue: ${result}`);
+}
+getValue();
+
+const wait3 = delay => {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve();            
+        }, delay);
+    });
+}
+
+const init = async () => {
+    console.log("32. A");
+    await wait3(1000);
+    console.log("32. B");
+}
+init();
+
+// Refactoring to await
+//   get(endpoint) {
+//     return fetch(this.baseUrl + endpoint)
+//     .then(response => response.json())
+//     .then(data => console.log(data.weather))
+//   }
+// becomes:
+//   async get(endpoint) {
+//     const response = await fetch(this.baseUrl + endpoint)
+//     const js = await response.json();
+//     console.log(js.weather)
+//   }
+
+class Backend {
+    constructor() {
+        this.baseUrl = '';
+    }
+    setBaseUrl(url) {
+        this.baseUrl = url;
+    }
+    async get(endpoint) {
+        //const response = await fetch(this.baseUrl + endpoint)
+        //return await response.json();
+        try {
+            const response = await fetch(this.baseUrl + endpoint)
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            //network error or API did not return JSON
+            throw new Error(error);
+        }
+    }
+}
+
+const getWeather = async () => {
+    const API = new Backend();
+    API.setBaseUrl("https://api.learnjavascript.online/demo");
+    const response = await API.get("/notifications/new.json")
+    const count = await response.count
+    return count
+}
+
+count = getWeather().then(count => {
+  console.log(`32. getWeather() = ${count}`)
+})
+
+// Handling errors:
+// By default, async methods will reject when an error occurs.
+// Wrap await calls with try/catch to get more control over error detection.
+// When using try/catch, any returned value inside an async function will resolve the promise (successfully).
+// throw new Error() inside the catch block of the try/catch to reject the promise.
+
+// 33.  Web Components
+console.log('--- 33. Web Components ---')
+// Normally when you create a Navbar in your Web App, you often end up writing a pile of 
+// HTML, CSS & JavaScript for the navbar to look & function properly.
+// Web Components,allow us to create our own custom HTML element which we can call 
+// app-navbar and this HTML element will encapsulate all the styles & logic/functionality 
+// such that it becomes reusable.  Then you can use it anywhere you have:
+// <app-navbar></app-navbar>
+// Web components are:
+// * reusable: you can reuse a component as many times as you want
+// * modular: they're based on modules. The definition of a web component is most often in a single file. 
+// * encapsulated: they hide the implementation detail, so that you can focus on what matters.
+// Web Components are a recent addition to the Web Platform (which means they're a recent addition 
+// to browsers) and they work on all modern browsers.
+// Experience in building Web Components will help you work with other front-end frameworks as well as 
+// understand the advanced capabilities of the browser.  This will also help you not rely on too many 
+// libraries and frameworks which might end up making your webapp slower.
+// lit-element is a high level abstractions on top of Web Components.
+//
+// Custom Elements API:
+// * The Custom Elements API lets you define your own DOM element.
+// * Your custom element's name must have a - somewhere in its name.
+// * You always have to extend from HTMLElement
+// * If you decide to define your own constructor() then you must call super() at the top of the constructor.
+//
+// Shadow DOM:
+// A Shadow DOM is a portion of the DOM that is encapsulated from the rest of the DOM. 
+// This means Styles & Scripts are self-contained inside this shadow DOM. 
+// They are not global and they do not bleed outside the Shadow DOM.
+//
+// HTML Templates:
+// An HTML Template is simply a <template> element that lets you define the code (mostly HTML & CSS) of a Web Component. 
+// The main usecase of the <template> element is to store a template that is reusable later on when you need it.
+// HTML Templates do not render or load until they're appended into an element or a Web Component.
+// The main benefit of using HTML templates is that it's faster to inject into a Web Component 
+// compared to using .innerHTML and a string of HTML.
+//
+// class DashboardStats extends HTMLElement {
+//    constructor(){
+//        super(); //ALWAYS start with super()
+//        const shadowRoot = this.attachShadow({mode: "open"});
+//        const template = document.querySelector("#dashboard-template");
+//        shadowRoot.appendChild(template.content.cloneNode(true));
+//    }
+// }
+//
+// Lifecycle:
+// * When the element is created, the constructor() is called.
+// * When the element is inserted into the DOM, the connectedCallback() is called.
+// This is where you'll most likely manage attributes and add event listeners.
+// * When the element is removed from the DOM, the disconnectedCallback() is called.
+// This is often used to clean up and restore memory. Most commonly, it's used to remove event listeners.
+//
+// Attributes and Properties:
+// * Just like normal HTML elements, your own Web Components can have custom attributes but they must be strings.
+// * A property is simply a variable attached to the instance of the Web Component and it can have any value.
+// const sz = this.getAttribute("size")
+//
+// LitElement:
+// lit-element allows you to define your Web Component in an intuitive syntax without boilerplate.
+
+// 34.  Project IV
+console.log('--- 34. Project IV ---')
+console.log('Completed in separate file')
 
 console.log(`------ PASSED ------`)
