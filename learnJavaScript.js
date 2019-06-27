@@ -1411,4 +1411,91 @@ console.log('--- 33. Web Components ---')
 console.log('--- 34. Project IV ---')
 console.log('Completed in separate file')
 
+// 34.  Project IV
+console.log('--- 35. Package Managers ---')
+// node.js
+// -------
+// Node (or NodeJs) is a JavaScript runtime environment. 
+// This means it lets you run JavaScript code on your computer & outside of the browser.
+// npm
+// ---
+// Node package manager
+// You can search for packages on npmjs.com. Use the search bar to search for a package you might need.
+// You can install packages locally or globally thus:
+// $ npm install learnjavascript-online-npm
+// $ npm install learnjavascript-online-npm --globally
+// npx
+// ---
+// npx is a command that comes with npm and lets you execute packages installed locally.
+// Let's say for example you installed webpack-dev-server with npm install webpack-dev-server.
+// You can simply run webpack-dev-server by running: npx webpack-dev-server.
+// package.json
+// ------------
+// When you install a package locally, it will be saved in a file called package.json. 
+// This file keeps track of the packages that you have installed in your project.
+// When you run `npm install` it goes through the package.json in the folder and downloads 
+// all the packages listed under dependencies and devDependencies.  So `npm install` will 
+// get you all the packages that this project needs to be functional.
+// There is a differentiaton between dependencies and devDependencies.
+// dependencies lists the packages that an end user of webpack would need.
+// Whereas the devDependencies lists the packages that a developer of webpack would need.
+// npm init
+// --------
+// What if you start a new project from scratch? Then you can simply run the npm init 
+// command which will ask you a series of questions and generate a package.json.
+// node_modules
+// ------------
+// When you install packages locally, they will be installed inside your folder in a 
+// new folder called node_modules.
+// The node_modules folder should be ignored by git because you should not be tracking 
+// the files inside node_modules.
+// If you don't have that already, you can ignore node_modules by creating a new 
+// .gitignore file at the root of your project and then simply write in it:
+// node_modules/
+// package-lock.json
+// -----------------
+// Even though the node_modules folder is ignored, you can safely delete it and then 
+// re-install all the packages by simply running npm install.
+// That's because there's a file called package.lock that holds the exact versions of 
+// the packages that are installed.
+// npm vs yarn
+// -----------
+// In 2016, a group of open source developers from big companies such as Facebook, 
+// Google and others teamed up together to publish yarn which is another package 
+// manager for node that uses the same packages available on npmjs.org.
+// The main reasons why yarn was launched is because at that time, npm was extremely 
+// slow and missing some key functionalities (such as package.json, offline support, etc.)
+// Nowadays npm and yarn are both relatively fast. You could argue that yarn is 
+// even faster than npm but pragmatically speaking it's not that big of a difference. 
+// They both have lock files and work offline.
+// The main difference that remains is that yarn has a flat mode. The flat mode 
+// guarantees that there will be a single version of a package installed in all scenarios.
+// This generally has an advantage if you're building web projects because it helps you 
+// avoid shipping the same package to your users more than once.
+// Note that you should avoid using both npm and yarn in the same project due to the 
+// difference in lock files. So choose one of them and stick with it.
+// Here's how they differ:
+//
+// # init package.json
+// npm init
+// yarn init
+//
+// # install package locally
+// npm install {package-name}
+// yarn add {package-name}
+//
+// # install package globally
+// npm install {package-name} --global
+// yarn global add {package-name}
+//
+
+const ljs = require('learnJavaScript-online-npm');
+
+const getAnswer = () => {
+    return ljs;
+}
+// sample usage
+console.log(getAnswer());
+
+
 console.log(`------ PASSED ------`)

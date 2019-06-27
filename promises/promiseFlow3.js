@@ -31,8 +31,8 @@ async function getBananas(payload) {
 	console.log(`getBananas(${payload.bananasUrl})`)
 	try {
 		const bananas = await get(payload.bananasUrl)
+		console.log('getBananas: completed!')
 		payload.bananas = bananas
-		console.log(`payload = ${payload}`)
 		return payload
 	}
 	catch (error) {
@@ -45,6 +45,7 @@ async function getApples(payload) {
 	console.log(`getApples(${payload.applesUrl})`)
 	try {
 		const apples = await get(payload.applesUrl)
+		console.log('getApples: completed!')
 		payload.apples = apples
 		return payload
 	}
@@ -55,11 +56,13 @@ async function getApples(payload) {
 }
 
 function createBasket(payload){
+	console.log('createBasket')
 	payload.basket = [{bananas:payload.bananas},{apples:payload.apples}]
 	return payload
 }
 
 function dumpBasket(payload){
+	console.log('dumpBasket')
 	console.log(payload.basket)
 	return payload
 }

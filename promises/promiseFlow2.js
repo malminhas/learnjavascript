@@ -22,27 +22,33 @@ function get (url) {
 // ----------- VERSION 2 --------------
 
 function getBananas(payload) {
+	console.log('getBananas')
 	return get(payload.bananasUrl)
 		.then(bananas => {
+			console.log(`getBananas: completed!`)
 			payload.bananas = bananas
 			return payload
 		})
 }
 
 function getApples(payload) {
+	console.log('getApples')
 	return get(payload.applesUrl)
 		.then(apples => {
+			console.log(`getApples: completed!`)
 			payload.apples = apples
 			return payload
 		})
 }
 
 function createBasket(payload){
+	console.log('createBasket')
 	payload.basket = [{bananas:payload.bananas},{apples:payload.apples}]
 	return payload
 }
 
 function dumpBasket(payload){
+	console.log('dumpBasket')
 	console.log(payload.basket)
 	return payload
 }
