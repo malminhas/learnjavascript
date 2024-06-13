@@ -28,10 +28,14 @@ class TodoManager {
         return this.todos.filter(todo => todo.is_completed ==! true);        
     }
     getFirst(){
-        return this.todos.splice(0,1)[0];
+	// using splice will modify the original array!
+        //return this.todos.splice(0,1)[0];
+	return this.todos[0];
     }
     getLast(){
-        return this.todos.splice(this.todos.length-1,this.todos.length)[0];
+	// using splice will modify the original array!
+        //return this.todos.splice(this.todos.length-1,this.todos.length)[0];
+	return this.todos[this.todos.length-1]
     }
     getCount(){
         return this.todos.length;
@@ -51,8 +55,9 @@ class TodoManager {
         return this.todos.every(todo => todo.is_completed === false)
 	    }
     exportCsv(){
-        return this.todos.map(todo => todo.title).join(", ")
-	    }
+        return "title, is_completed\n" +
+	    this.todos.map(todo => todo.title + "," + todo.is_completed).join("\n")
+    }
 }
 
 //sample usage
@@ -65,20 +70,31 @@ const initialTodos = [{
     }];
 const todoManager = new TodoManager(initialTodos);
 
+console.log("---- todoManager.getCompleted() -----")
 console.log(todoManager.getCompleted()); //returns completed todos
+console.log("---- todoManager.getPending() -----")
 console.log(todoManager.getPending()); //returns todos that are not completed
+console.log("---- todoManager.getFirst() -----")
 console.log(todoManager.getFirst());
+console.log("---- todoManager.getLast() -----")
 console.log(todoManager.getLast());
+console.log("---- todoManager.getCount() -----")
 console.log(todoManager.getCount());
+console.log("---- todoManager.markAsCompleted(\"Practice flashcards\") -----")
 todoManager.markAsCompleted("Practice flashcards");
+console.log("---- todoManager.add(\"Recap flashcards\") -----")
 todoManager.add({
-	title: "Recap flashcards",
-	    is_completed: true
-	    });
-//when is_completed is not defined, it should default to false
+    title: "Recap flashcards",
+    is_completed: true
+});
+// when is_completed is not defined, it should default to false
+console.log("---- todoManager.add(\"Get some rest!\") -----")
 todoManager.add({
-	title: "Get some rest"
-	    });
+    title: "Get some rest!",
+});
+console.log("---- todoManager.getAllCompleted() -----")
 console.log(todoManager.allCompleted()); //returns true when all todo items are completed
+console.log("---- todoManager.allPending() -----")
 console.log(todoManager.allPending()); //returns true when all todo items are pending
+console.log("---- todoManager.exportCsv() -----")
 console.log(todoManager.exportCsv()); //returns "Learn JavaScript, Practice flashcards"
