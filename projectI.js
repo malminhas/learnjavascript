@@ -96,5 +96,7 @@ console.log("---- todoManager.getAllCompleted() -----")
 console.log(todoManager.allCompleted()); //returns true when all todo items are completed
 console.log("---- todoManager.allPending() -----")
 console.log(todoManager.allPending()); //returns true when all todo items are pending
+console.log("---- todoManager.getCount() -----")
+console.log(todoManager.getCount());
 console.log("---- todoManager.exportCsv() -----")
 console.log(todoManager.exportCsv()); //returns "Learn JavaScript, Practice flashcards"
