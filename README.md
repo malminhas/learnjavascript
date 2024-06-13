@@ -10,6 +10,26 @@ The project files correspond to the four extended projects I,II,III,IV in the co
 $ node projectI.js
 ```
 
+Installation and set up
+-----------------------
+You will need to install node.js as follows:
+```
+$ brew install node
+```
+That will get you node v22.2.0.
+You then need to install nvm using the instructions [here](https://medium.com/@priscillashamin/how-to-install-and-configure-nvm-on-mac-os-43e3366c75a6)
+Then follow the instructions [here](https://stackoverflow.com/questions/68774489/punycode-is-deprecated-in-npm-what-should-i-replace-it-with) to ensure you are on the LTS version of node:
+```
+$ nvm install 20.10.0
+$ nvm use 20.10.0
+$ node --version
+v20.10.0
+```
+You need to install one of the dependencies from github as follows:
+```
+$ npm install git+https://github.com/jadjoubran/learnjavascript-online-npm
+```
+
 Arrow Functions
 ---------------
 ```
