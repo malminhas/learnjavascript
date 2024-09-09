@@ -21,7 +21,11 @@
 // Not ES6 compliant
 // Node.js is different from browser:
 // https://flaviocopes.com/node-difference-browser/
-const fetch = require('node-fetch');
+
+//node-fetch was converted to be a ESM only package in version 3.0.0-beta.10. 
+//node-fetch is an ESM-only module - you are not able to import it with require.
+//const fetch = require("node-fetch");
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 class Backend {
     //do not modify the constructor

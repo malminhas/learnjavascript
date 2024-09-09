@@ -15,7 +15,10 @@ https://hackernoon.com/javascript-async-await-the-good-part-pitfalls-and-how-to-
 
 */
 
-const fetch = require('node-fetch');
+//node-fetch was converted to be a ESM only package in version 3.0.0-beta.10. 
+//node-fetch is an ESM-only module - you are not able to import it with require.
+//const fetch = require("node-fetch");
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 // We create a factory that takes a url and returns a promise of fetching data
 async function get(url) {

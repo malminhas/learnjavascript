@@ -5,11 +5,18 @@
 // $ brew search node
 // Now check the installed version
 // $ node --version
-// v12.1.0
+// v22.8.0
 //
 // Running
 // -------
 // $ node LearnJavaScript.js
+
+// Note that there are two types of module syntax for nodejs:
+// 1. CommonJS syntax, that uses require module.exports
+// 2. ES syntax, that use import * from "path" style of module. 
+// By default, nodejs will try to load modules with the CommonJS syntax. 
+// If you want to use the ES syntax, you must specify "type":"module" in your package.json.
+// Or explicitly import.
 
 // ES6 in browser is DIFFERENT from node.  From:
 // https://flaviocopes.com/node-difference-browser/
@@ -17,9 +24,15 @@
 // we are starting to see the ES Modules standard being implemented.
 // In practice, this means that for the time being you use 
 // require() in Node and import in the browser":
-//import {Helper} from "helper.js";
+
 const helper = require('./helper.js'); 
-const fetch = require('node-fetch');
+//import {Helper} from "./helper.js"
+//const helper = new Helper()
+
+//node-fetch was converted to be a ESM only package in version 3.0.0-beta.10. 
+//node-fetch is an ESM-only module - you are not able to import it with require.
+//const fetch = require("node-fetch");
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 // 1.  Basic Functions
 console.log('--- 1. Basic Functions  ---')
@@ -260,8 +273,9 @@ console.log(
   )}`
 )
 const name = 'Jad'
-const characters = [...name] // ["J", "a", "d"]
+const chars = [...name] // ["J", "a", "d"]
 const splitStringIntoChars = string => {
+  var chars = []
   return (chars = [...string])
 }
 console.log(
@@ -1489,6 +1503,8 @@ console.log('--- 35. Package Managers ---')
 // yarn global add {package-name}
 //
 
+// Need to install this as follows:
+// npm install git@github.com:jadjoubran/learnjavascript-online-npm.git
 const ljs = require('learnJavaScript-online-npm');
 
 const getAnswer = () => {
@@ -1496,6 +1512,5 @@ const getAnswer = () => {
 }
 // sample usage
 console.log(getAnswer());
-
 
 console.log(`------ PASSED ------`)

@@ -10,7 +10,10 @@ http://www.christianalfoni.com/articles/2017_04_16_The-second-case-for-function-
 
 */
 
-const fetch = require('node-fetch');
+//node-fetch was converted to be a ESM only package in version 3.0.0-beta.10. 
+//node-fetch is an ESM-only module - you are not able to import it with require.
+//const fetch = require("node-fetch");
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 // We create a factory that takes a url and returns a promise of fetching data
 function get (url) {

@@ -1,9 +1,13 @@
 // From: https://stackoverflow.com/questions/48433783/referenceerror-fetch-is-not-defined
 // You have to use an external module to provide support for the fetch API in node.
 //    $ npm install node-fetch
-// Then use as follows:
+// Then use as follows.
+//
 
-const fetch = require("node-fetch");
+//node-fetch was converted to be a ESM only package in version 3.0.0-beta.10. 
+//node-fetch is an ESM-only module - you are not able to import it with require.
+//const fetch = require("node-fetch");
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 const getCompletedChapters = () => {
     fetch("https://api.learnjavascript.online/demo/chapters/all.json")
